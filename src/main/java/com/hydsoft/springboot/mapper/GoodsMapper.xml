@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hydsoft.springboot.mapper.GoodsMapper" >
+    <insert id="batchinsert" parameterType="java.util.List">
+        insert into goods (goodsid, goodsname, goodstype) values
+        <foreach collection="list" item="a" index="index" separator=",">
+            ( #{a.goodsid},
+            #{a.goodsname}, #{a.goodstype})
+        </foreach>
+    </insert>
+
+    <!--<update id="WHOLESALE-UPDATE-REBATE-CONFIG-BY-PRODUCTCODE">
+        UPDATE rebate_config SET rebate_type =
+        'BY_RATE',rebate_config_value = #rebateConfigValue# WHERE
+        <iterate property="list" conjunction="or" open="(" close=")">product_code =#list[]#</iterate>
+    </update>-->
+
+    <select id="batchSelect" resultType="com.hydsoft.springboot.model.Goods">
+        SELECT * FROM goods where goodsid in
+        <foreach item="bieming" index="index" collection="list" open="(" separator="," close=")">
+            #{bieming}
+        </foreach>
+    </select>
+
+    <update id="batchUpdate" parameterType="com.hydsoft.springboot.model.Goods">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update goods
+
+            <set>
+                <!--<if test="item.userName != null">userName=#{item.userName},</if>
+                <if test="item.age != null">age=#{item.age},</if>
+                <if test="item.sex != null">sex=#{item.sex},</if>
+                <if test="item.salary != null">salary=#{item.salary},</if>
+                <if test="item.completed != null">completed=#{item.completed},</if>
+                <if test="item.remark != null">remark=#{item.remark}</if>-->
+                <if test="item.goodsname != null">goodsname=#{item.goodsname},</if>
+                <if test="item.goodstype != null">goodstype=#{item.goodstype}</if>
+            </set>
+                    where goodsid = #{item.goodsid}
+        </foreach>
+    </update>
+
+
+    <delete id="batchDelete" parameterType="com.hydsoft.springboot.model.Goods">
+        delete from goods where goodsid
+        in
+        <foreach collection="list" item="goods" index="index" open="(" close=")" separator=",">
+            #{goods}
+        </foreach>
+    </delete>
+</mapper>
+
+<!--
+1.foreach元素的属性主要有 item，index，collection，open，separator，close。
+ 2.item表示集合中每一个元素进行迭代时的别名
+ 3.index指定一个名字，用于表示在迭代过程中，每次迭代到的位置
+ 4.open表示该语句以什么开始
+ 5.separator表示在每次进行迭代之间以什么符号作为分隔符
+ 6.close表示以什么结束
+ 7.collection属性为必填属性! 可以是List,Array,Map.
+-update
+
+
+1.prepend 可被覆盖的 SQL 语句组成部分，添加在语句的前面（可选）
+ 2.property 类型为 java.util.List 的用于遍历的元素（必选）
+ 3.open 整个遍历内容体开始的字符串，用于定义括号（可选）
+ 4.close 整个遍历内容体结束的字符串，用于定义括号（可选）
+ 5.conjunction 每次遍历内容之间的字符串，用于定义 AND 或 OR（可选）
+
+
+
+-->

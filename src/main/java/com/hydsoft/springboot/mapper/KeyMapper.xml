@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hydsoft.springboot.mapper.KeyMapper" >
+  <resultMap id="BaseResultMap" type="com.hydsoft.springboot.model.Key" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="carid" property="carid" jdbcType="INTEGER" />
+    <result column="timestamp" property="timestamp" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="version" property="version" jdbcType="INTEGER" />
+    <result column="key" property="key" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, carid, timestamp, status, version, key
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from key
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from key
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hydsoft.springboot.model.Key" >
+    insert into key (id, carid, timestamp, 
+      status, version, key
+      )
+    values (#{id,jdbcType=INTEGER}, #{carid,jdbcType=INTEGER}, #{timestamp,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}, #{key,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hydsoft.springboot.model.Key" >
+    insert into key
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="carid != null" >
+        carid,
+      </if>
+      <if test="timestamp != null" >
+        timestamp,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="keyVersion != null" >
+        version,
+      </if>
+      <if test="key != null" >
+        key,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="carid != null" >
+        #{carid,jdbcType=INTEGER},
+      </if>
+      <if test="timestamp != null" >
+        #{timestamp,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="keyVersion != null" >
+        #{version,jdbcType=INTEGER},
+      </if>
+      <if test="key != null" >
+        #{key,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hydsoft.springboot.model.Key" >
+    update key
+    <set >
+      <if test="carid != null" >
+        carid = #{carid,jdbcType=INTEGER},
+      </if>
+      <if test="timestamp != null" >
+        timestamp = #{timestamp,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="keyVersion != null" >
+        version = #{version,jdbcType=INTEGER},
+      </if>
+      <if test="key != null" >
+        key = #{key,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hydsoft.springboot.model.Key" >
+    update key
+    set carid = #{carid,jdbcType=INTEGER},
+      timestamp = #{timestamp,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      version = #{version,jdbcType=INTEGER},
+      key = #{key,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
